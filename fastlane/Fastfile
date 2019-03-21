@@ -1,8 +1,8 @@
 fastlane_version '2.117.1'
 
 before_all do
-  ensure_git_branch
-  ensure_git_status_clean
+#  ensure_git_branch
+#  ensure_git_status_clean
 #  git_pull
 end
 
@@ -13,4 +13,50 @@ platform :ios do
       scheme: "ReactNativeHelloWorld",
       project: "ios/ReactNativeHelloWorld.xcodeproj")
    end
+   lane :build_no_ipa do
+     build_ios_app(
+      project: ("ios/ReactNativeHelloWorld.xcodeproj"),
+      configuration: "Debug",
+      scheme: "ReactNativeHelloWorld",
+      silent: true,
+      clean: true,
+      skip_package_ipa: true,
+      output_directory: "path/to/dir", # Destination directory. Defaults to current directory.
+      output_name: "my-app.ipa",       # specify the name of the .ipa file to generate (including file extension)
+#      sdk: "iOS 11.1"        # use SDK as the name or path of the base SDK when building the project.
+    )
+   end
+   lane :build do
+     increment_build_number(
+        xcodeproj: "ios/ReactNativeHelloWorld.xcodeproj" # (optional, you must specify the path to your main Xcode project if it is not in the project root directory)
+      )
+     build_ios_app(
+      project: ("ios/ReactNativeHelloWorld.xcodeproj"),
+      configuration: "Release",
+      scheme: "ReactNativeHelloWorld",
+      silent: true,
+      clean: true,
+      export_method: "development",
+      output_directory: "Build", # Destination directory. Defaults to current directory.
+      output_name: "ReactNativeHelloWorld.ipa" ,      # specify the name of the .ipa file to generate (including file extension)
+      skip_profile_detection: true,
+#      sdk: "iOS 11.1"        # use SDK as the name or path of the base SDK when building the project.
+      export_options: {
+        provisioningProfiles: {
+          "org.reactjs.native.example.ReactNativeHelloWorld" => "globile-poc"
+        }
+      }
+    )
+
+
+   end
+   lane :distribute do
+     appcenter_upload(
+       api_token: "52dd57935a8732e938a06f20b8ac53e404873a63",
+       owner_name: "globile-devops",
+       app_name: "ReactNativeHelloWorld",
+       ipa: "Build/ReactNativeHelloWorld.ipa",
+       group: "Globile DevOps"
+    )
+  end
 end

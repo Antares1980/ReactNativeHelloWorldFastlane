@@ -21,6 +21,21 @@ or alternatively using `brew cask install fastlane`
 fastlane ios tests
 ```
 
+### ios build_no_ipa
+```
+fastlane ios build_no_ipa
+```
+
+### ios build
+```
+fastlane ios build
+```
+
+### ios distribute
+```
+fastlane ios distribute
+```
+
 
 ----
 
