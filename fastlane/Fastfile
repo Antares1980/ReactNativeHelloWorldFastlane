@@ -10,7 +10,7 @@ platform :ios do
    # iOS Lanes
    lane :tests do
      run_tests(
-      scheme: "HelloWorld",
+      scheme: "ReactNativeHelloWorld",
       project: "ios/ReactNativeHelloWorld.xcodeproj")
    end
 end
