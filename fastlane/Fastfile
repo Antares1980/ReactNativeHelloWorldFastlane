@@ -1,0 +1,16 @@
+fastlane_version '2.117.1'
+
+before_all do
+  ensure_git_branch
+  ensure_git_status_clean
+  git_pull
+end
+
+platform :ios do
+   # iOS Lanes
+   lane :tests do
+     run_tests(
+      scheme: "HelloWorld",
+      project: "ios/ReactNativeHelloWorld.xcodeproj")
+   end
+end
