@@ -3,7 +3,7 @@
 .DS_Store
 Build/
 Gemfile.lock
-
+fastlane/tests_output/
 # Xcode
 #
 build/
