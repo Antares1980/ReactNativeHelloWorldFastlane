@@ -5,35 +5,36 @@ before_all do
 #  ensure_git_status_clean
 #  git_pull
 end
-
+ENV["FASTLANE_XCODE_PROJECT_NAME"] = "ios/ReactNativeHelloWorld.xcodeproj"
+ENV["FASTLANE_XCODE_SCHEME"] = "ReactNativeHelloWorld"
+ENV["FASTLANE_XCODE_APP_NAME"] = "ReactNativeHelloWorld"
+#ENV["FASTLANE_APP_CENTER_TOKEN"]
 platform :ios do
    # iOS Lanes
    lane :tests do
      run_tests(
-      scheme: "ReactNativeHelloWorld",
-      project: "ios/ReactNativeHelloWorld.xcodeproj")
+      scheme: ENV["FASTLANE_XCODE_SCHEME"],
+      project: ENV[FASTLANE_PROJECT_NAME])
    end
    lane :build_no_ipa do
      build_ios_app(
-      project: ("ios/ReactNativeHelloWorld.xcodeproj"),
+      project: ENV["FASTLANE_XCODE_PROJECT_NAME"],
       configuration: "Debug",
-      scheme: "ReactNativeHelloWorld",
+      scheme: ENV["FASTLANE_XCODE_SCHEME"],
       silent: true,
       clean: true,
-      skip_package_ipa: true,
-      output_directory: "path/to/dir", # Destination directory. Defaults to current directory.
-      output_name: "my-app.ipa",       # specify the name of the .ipa file to generate (including file extension)
+      skip_package_ipa: true
 #      sdk: "iOS 11.1"        # use SDK as the name or path of the base SDK when building the project.
     )
    end
    lane :build do
      increment_build_number(
-        xcodeproj: "ios/ReactNativeHelloWorld.xcodeproj" # (optional, you must specify the path to your main Xcode project if it is not in the project root directory)
+        xcodeproj: ENV["FASTLANE_XCODE_PROJECT_NAME"] # (optional, you must specify the path to your main Xcode project if it is not in the project root directory)
       )
      build_ios_app(
-      project: ("ios/ReactNativeHelloWorld.xcodeproj"),
+      project: ENV["FASTLANE_XCODE_PROJECT_NAME"],
       configuration: "Release",
-      scheme: "ReactNativeHelloWorld",
+      scheme: ENV["FASTLANE_XCODE_SCHEME"],
       silent: true,
       clean: true,
       export_method: "development",
@@ -52,9 +53,9 @@ platform :ios do
    end
    lane :distribute do
      appcenter_upload(
-       api_token: "52dd57935a8732e938a06f20b8ac53e404873a63",
+       api_token: ENV["FASTLANE_APP_CENTER_TOKEN"],
        owner_name: "globile-devops",
-       app_name: "ReactNativeHelloWorld",
+       app_name: ENV["FASTLANE_XCODE_APP_NAME"],
        ipa: "Build/ReactNativeHelloWorld.ipa",
        group: "Globile DevOps"
     )
