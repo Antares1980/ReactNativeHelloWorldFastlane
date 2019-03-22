@@ -8,7 +8,13 @@ end
 
 platform :ios do
    # iOS Lanes
+   lane :bundle_installation do
+     bundle_install(
+      path: ENV["HOME"] + "/.bundle/dependencies"
+     )
+   end
    lane :build_no_ipa do
+     bundle_installation
      build_ios_app(
       project: ENV["FASTLANE_XCODE_PROJECT_NAME"],
       configuration: ENV["FASTLANE_XCODE_BUILD_CONFIGURATION"],
@@ -20,12 +26,14 @@ platform :ios do
     )
    end
    lane :tests do
+     bundle_installation
      run_tests(
       scheme: ENV["FASTLANE_XCODE_SCHEME"],
       project: ENV["FASTLANE_XCODE_PROJECT_NAME"]
       )
    end
    lane :build do
+     bundle_installation
      increment_build_number(
         xcodeproj: ENV["FASTLANE_XCODE_PROJECT_NAME"] # (optional, you must specify the path to your main Xcode project if it is not in the project root directory)
       )
@@ -52,7 +60,7 @@ platform :ios do
        api_token: ENV["FASTLANE_APP_CENTER_TOKEN"],
        owner_name: ENV["FASTLANE_XCODE_DISTRIBUTION_APP_CENTER_OWNER_NAME"],
        app_name: ENV["FASTLANE_XCODE_APP_NAME"],
-       ipa: ENV["FASTLANE_XCODE_DISTRIBUTION_APP_CENTER_IPA_PATH"],
+       ipa: ENV["FASTLANE_XCODE_DISTRIBUTION_IPA_PATH"],
        group: ENV["FASTLANE_XCODE_DISTRIBUTION_APP_CENTER_GROUP"]
     )
   end
