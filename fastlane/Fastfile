@@ -15,6 +15,11 @@ platform :ios do
    end
    lane :build_no_ipa do
      bundle_installation
+     sync_code_signing(
+      git_url: ENV["CERTIFICATES_GIT_URL"],
+      username: "pv.joseangel@gmail.com",
+      app_identifier: "*"
+     )
      build_ios_app(
       project: ENV["FASTLANE_XCODE_PROJECT_NAME"],
       configuration: ENV["FASTLANE_XCODE_BUILD_CONFIGURATION"],

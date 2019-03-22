@@ -4,7 +4,7 @@
 Build/
 Gemfile.lock
 fastlane/tests_output/
-./fastlane/report.xml
+fastlane/report.xml
 # Xcode
 #
 build/
