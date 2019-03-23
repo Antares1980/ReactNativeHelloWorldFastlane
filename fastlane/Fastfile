@@ -20,6 +20,9 @@ platform :ios do
       username: "pv.joseangel@gmail.com",
       app_identifier: "*"
      )
+     enable_automatic_code_signing(
+        path: ENV["FASTLANE_XCODE_PROJECT_NAME"]
+      )
      build_ios_app(
       project: ENV["FASTLANE_XCODE_PROJECT_NAME"],
       configuration: ENV["FASTLANE_XCODE_BUILD_CONFIGURATION"],
