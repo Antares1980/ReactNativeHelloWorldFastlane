@@ -28,3 +28,4 @@ Project documentation is under doc folder
 * https://facebook.github.io/react-native/docs/getting-started.html
 * https://github.com/Microsoft/fastlane-plugin-appcenter
 * https://docs.microsoft.com/en-us/appcenter/
+* https://docs.fastlane.tools/actions/sync_code_signing/#fastlane

@@ -25,6 +25,7 @@ platform :ios do
       )
      build_ios_app(
       project: ENV["FASTLANE_XCODE_PROJECT_NAME"],
+      workspace: ENV["FASTLANE_XCODE_WORKSPACE"],
       configuration: ENV["FASTLANE_XCODE_BUILD_CONFIGURATION"],
       scheme: ENV["FASTLANE_XCODE_SCHEME"],
       silent: true,
