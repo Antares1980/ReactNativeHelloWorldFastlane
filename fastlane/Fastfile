@@ -29,6 +29,7 @@ platform :ios do
       scheme: ENV["FASTLANE_XCODE_SCHEME"],
       silent: true,
       clean: true,
+      export_xcargs: "-allowProvisioningUpdates",
       skip_package_ipa: true
 #      sdk: "iOS 11.1"        # use SDK as the name or path of the base SDK when building the project.
     )
