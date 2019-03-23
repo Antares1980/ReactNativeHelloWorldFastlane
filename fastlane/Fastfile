@@ -33,6 +33,11 @@ platform :ios do
       export_method: ENV["FASTLANE_XCODE_BUILD_EXPORT_METHOD"],
       skip_package_ipa: true
 #      sdk: "iOS 11.1"        # use SDK as the name or path of the base SDK when building the project.
+      export_options: {
+        provisioningProfiles: {
+          ENV["FASTLANE_XCODE_BUNDLE_ID"] => ENV["FASTLANE_XCODE_PROVISIONING_PROFILE"]
+        }
+      }
     )
    end
    lane :tests do
