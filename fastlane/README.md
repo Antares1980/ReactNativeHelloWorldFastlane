@@ -21,9 +21,19 @@ or alternatively using `brew cask install fastlane`
 fastlane ios bundle_installation
 ```
 
-### ios build_no_ipa
+### ios build_skip_ipa
 ```
-fastlane ios build_no_ipa
+fastlane ios build_skip_ipa
+```
+
+### ios sync_certificates
+```
+fastlane ios sync_certificates
+```
+
+### ios build
+```
+fastlane ios build
 ```
 
 ### ios tests
@@ -31,9 +41,9 @@ fastlane ios build_no_ipa
 fastlane ios tests
 ```
 
-### ios build
+### ios run_coverage
 ```
-fastlane ios build
+fastlane ios run_coverage
 ```
 
 ### ios distribute

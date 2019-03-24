@@ -1,4 +1,4 @@
-fastlane_version '2.117.1'
+fastlane_version '2.118.1'
 
 before_all do
 #  ensure_git_branch
@@ -8,68 +8,38 @@ end
 
 platform :ios do
    # iOS Lanes
-   lane :bundle_installation do
-     bundle_install(
-      path: ENV["HOME"] + "/.bundle/dependencies"
+   # lane :bundle_installation do
+   #   bundle_install(
+   #    path: ENV["HOME"] + "/.bundle/dependencies"
+   #   )
+   # Cannot be done via bundle exec. It is needed to do it before running
+   end
+   lane :sync_certificates do
+     sync_code_signing(
+       git_url: ENV["CERTIFICATES_GIT_URL"],
+       username: ENV["FASTLANE_XCODE_APPLE_ACCOUNT"],
+       app_identifier: ENV["FASTLANE_XCODE_APP_IDENTIFIER"],
+       keychain_password: ENV["FASTLANE_PASSWORD"],
+       readonly: true
      )
    end
-   lane :build_no_ipa do
-     bundle_installation
-     sync_code_signing(
-      git_url: ENV["CERTIFICATES_GIT_URL"],
-      username: "pv.joseangel@gmail.com",
-      app_identifier: "*"
-     )
-     enable_automatic_code_signing(
-        path: ENV["FASTLANE_XCODE_PROJECT_NAME"]
+   lane :build do
+     increment_build_number(
+        xcodeproj: ENV["FASTLANE_XCODE_PROJECT_NAME"] # (optional, you must specify the path to your main Xcode project if it is not in the project root directory)
       )
-     build_ios_app(
-      project: ENV["FASTLANE_XCODE_PROJECT_NAME"],
-      workspace: ENV["FASTLANE_XCODE_WORKSPACE"],
-      configuration: ENV["FASTLANE_XCODE_BUILD_CONFIGURATION"],
-      scheme: ENV["FASTLANE_XCODE_SCHEME"],
-      silent: true,
-      clean: true,
-      export_xcargs: "-allowProvisioningUpdates",
-      export_method: ENV["FASTLANE_XCODE_BUILD_EXPORT_METHOD"],
-      skip_package_ipa: true,
-#      sdk: "iOS 11.1"        # use SDK as the name or path of the base SDK when building the project.
-      export_options: {
-        provisioningProfiles: {
-          ENV["FASTLANE_XCODE_BUNDLE_ID"] => ENV["FASTLANE_XCODE_PROVISIONING_PROFILE"]
-        }
-      }
-    )
+     gym
    end
    lane :tests do
-     bundle_installation
      run_tests(
       scheme: ENV["FASTLANE_XCODE_SCHEME"],
       project: ENV["FASTLANE_XCODE_PROJECT_NAME"]
       )
    end
-   lane :build do
-     bundle_installation
-     increment_build_number(
-        xcodeproj: ENV["FASTLANE_XCODE_PROJECT_NAME"] # (optional, you must specify the path to your main Xcode project if it is not in the project root directory)
-      )
-     build_ios_app(
-      project: ENV["FASTLANE_XCODE_PROJECT_NAME"],
-      configuration: ENV["FASTLANE_XCODE_BUILD_CONFIGURATION"],
-      scheme: ENV["FASTLANE_XCODE_SCHEME"],
-      silent: true,
-      clean: true,
-      export_method: ENV["FASTLANE_XCODE_BUILD_EXPORT_METHOD"],
-      output_directory: ENV["FASTLANE_XCODE_BUILD_OUTPUT_DIRECTORY"], # Destination directory. Defaults to current directory.
-      output_name: ENV["FASTLANE_XCODE_BUILD_OUTPUT_NAME"] ,      # specify the name of the .ipa file to generate (including file extension)
-      skip_profile_detection: true,
-#      sdk: "iOS 11.1"        # use SDK as the name or path of the base SDK when building the project.
-      export_options: {
-        provisioningProfiles: {
-          ENV["FASTLANE_XCODE_BUNDLE_ID"] => ENV["FASTLANE_XCODE_PROVISIONING_PROFILE"]
-        }
-      }
-    )
+   lane :run_coverage do
+     scan
+     slather(cobertura_xml: true, jenkins: true, scheme: "HelloWorld", build_directory: "./DerivedData", output_directory: "./reports", proj: "./HelloWorld.xcodeproj")
+     lizard(source_folder: "HelloWorld", language: "swift", export_type: "xml", report_file: "./reports/lizard-report.xml")
+     swiftlint(output_file: "./reports/swiftlint.txt", ignore_exit_status: true)
    end
    lane :distribute do
      appcenter_upload(

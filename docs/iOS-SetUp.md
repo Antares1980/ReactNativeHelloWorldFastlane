@@ -10,3 +10,4 @@
 
 Use Match
 Create an app_id in app dev portal
+Run npm install when checkout
