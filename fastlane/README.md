@@ -16,16 +16,6 @@ or alternatively using `brew cask install fastlane`
 
 # Available Actions
 ## iOS
-### ios bundle_installation
-```
-fastlane ios bundle_installation
-```
-
-### ios build_skip_ipa
-```
-fastlane ios build_skip_ipa
-```
-
 ### ios sync_certificates
 ```
 fastlane ios sync_certificates
