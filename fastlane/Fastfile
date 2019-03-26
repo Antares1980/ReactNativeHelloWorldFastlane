@@ -13,7 +13,7 @@ platform :ios do
    #    path: ENV["HOME"] + "/.bundle/dependencies"
    #   )
    # Cannot be done via bundle exec. It is needed to do it before running
-   end
+   # end
    lane :sync_certificates do
      sync_code_signing(
        git_url: ENV["CERTIFICATES_GIT_URL"],
@@ -26,6 +26,14 @@ platform :ios do
    lane :build do
      increment_build_number(
         xcodeproj: ENV["FASTLANE_XCODE_PROJECT_NAME"] # (optional, you must specify the path to your main Xcode project if it is not in the project root directory)
+      )
+
+      enable_automatic_code_signing(
+        path: ENV["FASTLANE_XCODE_PROJECT_NAME"]
+      )
+      update_project_team(
+        path: ENV["FASTLANE_XCODE_PROJECT_NAME"],
+        teamid: ENV["FASTLANE_XCODE_TEAM_ID"]
       )
      gym
    end
@@ -45,7 +53,7 @@ platform :ios do
      appcenter_upload(
        api_token: ENV["FASTLANE_APP_CENTER_TOKEN"],
        owner_name: ENV["FASTLANE_XCODE_DISTRIBUTION_APP_CENTER_OWNER_NAME"],
-       app_name: ENV["FASTLANE_XCODE_APP_NAME"],
+       app_name: ENV["FASTLANE_XCODE_DISTRIBUTION_APP_CENTER_APP_NAME"],
        ipa: ENV["FASTLANE_XCODE_DISTRIBUTION_IPA_PATH"],
        group: ENV["FASTLANE_XCODE_DISTRIBUTION_APP_CENTER_GROUP"]
     )
